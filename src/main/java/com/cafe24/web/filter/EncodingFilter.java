@@ -28,7 +28,6 @@ public class EncodingFilter implements Filter {
 		chain.doFilter(request, response);
 		
 		/* response 처리 */
-		
 	}
 	
 	public void destroy() {
