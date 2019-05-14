@@ -11,31 +11,6 @@ import com.cafe24.mysite.vo.GuestbookVo;
 import com.cafe24.mysite.vo.UserVo;
 
 public class UserDao {
-	
-	public Boolean delete(GuestbookVo vo) {
-		Boolean result = false;
-
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
-			conn = CustomConnector.getConnection();
-
-			String sql = "delete from guestbook where no = ? and password = ?";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setLong(1, vo.getNo());
-			pstmt.setString(2, vo.getPassword());
-
-			result = (1 == pstmt.executeUpdate());
-
-		} catch (SQLException e) {
-			System.out.println("error: " + e);
-		} finally {
-			CustomConnector.closeConnection(null, pstmt, conn);
-		}
-
-		return result;
-	}
 
 	public Boolean insert(UserVo vo) {
 		Boolean result = false;
@@ -50,8 +25,8 @@ public class UserDao {
 
 			pstmt.setString(1, vo.getName());
 			pstmt.setString(2, vo.getEmail());
-			pstmt.setString(2, vo.getPassword());
-			pstmt.setString(2, vo.getGender());
+			pstmt.setString(3, vo.getPassword());
+			pstmt.setString(4, vo.getGender());
 
 			result = (1 == pstmt.executeUpdate());
 
@@ -63,32 +38,63 @@ public class UserDao {
 
 		return result;
 	}
-
-	public List<GuestbookVo> getList() {
-		List<GuestbookVo> result = new ArrayList<>();
+	
+	public UserVo get(Long no) {
+		UserVo result = null;
+		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
 			conn = CustomConnector.getConnection();
-			String sql = "select no, name, contents, date_format(reg_date, '%Y-%m-%d %H:%i:%s') " + "from guestbook "
-					+ "order by reg_date desc";
+			String sql = "select name, email, password, gender from user " +
+					"where no = ? " +
+					"order by no asc";
 			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1,  no);
+
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				String name = rs.getString(2);
+				
+				result = new UserVo();
+				result.setNo(no);
+				result.setName(name);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("error: " + e);
+		} finally {
+			CustomConnector.closeConnection(rs, pstmt, conn);
+		}
+		return result;
+	}
+	
+	public UserVo get(String email, String password) {
+		UserVo result = null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = CustomConnector.getConnection();
+			String sql = "select no, name from user " +
+					"where email=? and password=? " +
+					"order by no asc";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1,  email);
+			pstmt.setString(2, password);
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Long no = rs.getLong(1);
 				String name = rs.getString(2);
-				String contents = rs.getString(3);
-				String regDate = rs.getString(4);
-
-				GuestbookVo vo = new GuestbookVo();
-				vo.setNo(no);
-				vo.setName(name);
-				vo.setContents(contents);
-				vo.setRegDate(regDate);
-
-				result.add(vo);
+				
+				result = new UserVo();
+				result.setNo(no);
+				result.setName(name);
 			}
 
 		} catch (SQLException e) {
