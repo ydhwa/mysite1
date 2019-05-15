@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.cafe24.mysite.action.guestbook.GuestbookActionFactory;
 import com.cafe24.web.mvc.Action;
 
+//@WebServlet("/guestbook")
 public class GuestBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	

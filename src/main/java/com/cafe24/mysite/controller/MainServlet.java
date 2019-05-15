@@ -11,14 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.cafe24.mysite.action.main.MainActionFactory;
 import com.cafe24.web.mvc.Action;
 
+//@WebServlet({"", "/main", "/index"})
 public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	// 생명주기 알아보기
-	public void init(ServletConfig config) throws ServletException {
-		System.out.println("Main: init called");
-		super.init();
+	@Override
+	public void init() throws ServletException {
+		String configPath = getServletConfig().getInitParameter("config");
+		System.out.println("init() called: " + configPath);
 	}
+
 	public void destroy() {
 		System.out.println("Main: destroy called");
 		super.destroy();
