@@ -7,8 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.cafe24.mysite.dao.GuestbookDao;
-import com.cafe24.mysite.vo.GuestbookVo;
+import com.cafe24.mysite.dao.BoardDao;
+import com.cafe24.mysite.vo.BoardVo;
 import com.cafe24.web.WebUtil;
 import com.cafe24.web.mvc.Action;
 
@@ -16,10 +16,10 @@ public class ListAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-//		GuestbookDao dao = new GuestbookDao();
-//		List<GuestbookVo> list = dao.getList();
-//		
-//		request.setAttribute("list", list);
+		BoardDao dao = new BoardDao();
+		List<BoardVo> list = dao.getList();
+		
+		request.setAttribute("list", list);
 		WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
 	}
 
