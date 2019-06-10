@@ -22,8 +22,8 @@ public class UserDao {
 
 			String sql =
 						"insert " +
-						"into user " +
-						"values(null, ?, ?, ?, ?, now())";
+						"into member " +
+						"values(default, ?, ?, ?, ?, now())";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, vo.getName());
@@ -51,7 +51,7 @@ public class UserDao {
 			conn = CustomConnector.getConnection();
 
 			String sql =
-						"update user " + 
+						"update member " + 
 						"set name = ?, email = ?, password = ?, gender = ? " + 
 						"where no = ?";
 			pstmt = conn.prepareStatement(sql);
@@ -83,7 +83,7 @@ public class UserDao {
 		try {
 			conn = CustomConnector.getConnection();
 			String sql =
-					"select name, email, password, gender from user " +
+					"select name, email, password, gender from member " +
 					"where no = ?";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -120,7 +120,7 @@ public class UserDao {
 		ResultSet rs = null;
 		try {
 			conn = CustomConnector.getConnection();
-			String sql = "select no, name from user " +
+			String sql = "select no, name from member " +
 					"where email=? and password=?";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -157,7 +157,7 @@ public class UserDao {
 			String sql =
 					"select exists( " + 
 					"select * " + 
-					"from user " + 
+					"from member " + 
 					"where email = ?)";
 			pstmt = conn.prepareStatement(sql);
 			

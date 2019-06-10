@@ -44,7 +44,7 @@ public class GuestbookDao {
 		try {
 			conn = CustomConnector.getConnection();
 
-			String sql = "insert " + "into guestbook " + "values(null, ?, ?, ?, now())";
+			String sql = "insert " + "into guestbook " + "values(default, ?, ?, ?, now())";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, vo.getName());
@@ -69,8 +69,8 @@ public class GuestbookDao {
 		ResultSet rs = null;
 		try {
 			conn = CustomConnector.getConnection();
-			String sql = "select no, name, contents, date_format(reg_date, '%Y-%m-%d %H:%i:%s') " + "from guestbook "
-					+ "order by reg_date desc";
+			String sql = "select no, name, contents, to_char(reg_date, 'yyyy-mm-dd') " + "from guestbook "
+					+ "order by no desc";
 			pstmt = conn.prepareStatement(sql);
 
 			rs = pstmt.executeQuery();
