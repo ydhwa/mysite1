@@ -69,8 +69,8 @@ public class GuestbookDao {
 		ResultSet rs = null;
 		try {
 			conn = CustomConnector.getConnection();
-			String sql = "select no, name, contents, to_char(reg_date, 'yyyy-mm-dd') " + "from guestbook "
-					+ "order by no desc";
+			String sql = "select no, name, contents, to_char(reg_date, 'yyyy-mm-dd hh24:mi:ss') " + "from guestbook "
+					+ "order by reg_date desc";
 			pstmt = conn.prepareStatement(sql);
 
 			rs = pstmt.executeQuery();
